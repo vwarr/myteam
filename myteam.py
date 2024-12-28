@@ -43,7 +43,7 @@ while(queue):
 
 
 if len(path) == 0:
-    print("The target team had no losses!")
+    print("No transitory win path! :(")
 else:
     message = ''
     for team in path[:-1]:
