@@ -1,5 +1,5 @@
-def get_wins_losses(api_instance, team, year):
-    games = api_instance.get_games(year=2024, team=team)
+def get_wins_losses(api_instance, team, year, beaten):
+    games = api_instance.get_games(year=year, team=team)
 
     wins = []
     losses = []
@@ -16,4 +16,9 @@ def get_wins_losses(api_instance, team, year):
             else:
                 losses.append(game.home_team)
 
-    print(wins, losses)
+    for win in wins:
+        if win not in beaten:
+            print(beaten)
+            beaten.add(win)
+            get_wins_losses(api_instance, win, year, beaten)
+    return wins, losses
