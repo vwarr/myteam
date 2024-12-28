@@ -1,4 +1,4 @@
-import cfbd, os, record
+import cfbd, os
 from collections import defaultdict
 
 config = cfbd.Configuration()
