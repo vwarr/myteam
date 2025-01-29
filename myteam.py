@@ -6,14 +6,11 @@ config.api_key['Authorization'] = os.getenv('CFBD_API_KEY')
 config.api_key_prefix['Authorization'] = 'Bearer'
 
 year = int(input("Year: "))
-starting_team = input("Starting team: ")
-ending_team = input("Ending team: ")
 
 win_graph = defaultdict(list)
 
 api_instance = cfbd.GamesApi(cfbd.ApiClient(configuration=config))
-games = api_instance.get_games(year=year)
-
+games = api_instance.get_games(year=year, season_type='regular') + api_instance.get_games(year=year, season_type='postseason')
 
 for game in games:
     if game.home_points is not None and game.away_points is not None:
@@ -21,6 +18,16 @@ for game in games:
             win_graph[game.home_team].append(game.away_team)
         else:
             win_graph[game.away_team].append(game.home_team)
+
+starting_team = input("Starting team: ")
+ending_team = input("Ending team: ")
+
+while starting_team not in win_graph or ending_team not in win_graph:
+    if starting_team not in win_graph:
+        starting_team = input("Invalid team. New starting team: ")
+    if ending_team not in win_graph:
+        ending_team = input("Invalid team. New end team: ")
+
 
 queue = []
 queue.append((starting_team, [starting_team]))
